@@ -1,0 +1,49 @@
+version: '3.0'
+
+services:
+  proxy:
+    restart: always
+    container_name: "cloud-sql-proxy"
+    image: gcr.io/cloudsql-docker/gce-proxy
+    volumes:
+      - ./app/prod.json:/config/prod.json:rw
+    ports:
+      - "5432:5432"
+    command: /cloud_sql_proxy --dir=/cloudsql -instances=clture-production:us-central1:streamlytics-prod-server=tcp:0.0.0.0:5432 -credential_file=/config/prod.json
+
+  redis:
+    image: "redis:alpine"
+
+  web:
+    build:
+      context: .
+    volumes:
+      - ./app:/flask_app/app:rw
+    command: ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  celery_worker:
+    build:
+      context: .
+    command: ['celery', '-A', 'app.celery.celery', 'worker', '-l', 'info']
+    volumes:
+      - ./app:/flask_app/app:rw
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  flower:
+    image: mher/flower:0.9.5
+    command: [ 'flower', '--broker=redis://redis:6379', '--port=5555']
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+volumes:
+  myapp:

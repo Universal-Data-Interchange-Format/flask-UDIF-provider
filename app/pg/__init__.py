@@ -15,10 +15,9 @@ def get_url():
     db = os.getenv('POSTGRES_DB')
 
     if os.getenv('ENV') != 'local':
-        conn_url = f'postgresql+pg8000://{username}:{password}@/{db}?unix_sock={host}'
+        conn_url = f'postgresql+psycopg2://{username}:{password}@/{db}?unix_socket =/cloudsql/clture-dev:us-central1:streamlytics-dev-server'
     else:
         conn_url = f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{db}'
-
     return conn_url
 
 

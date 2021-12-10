@@ -1,6 +1,5 @@
 import json
 import os
-import time
 import uuid
 from datetime import datetime
 
@@ -144,42 +143,8 @@ def teardown_request(exception=None):
 
 app.logger.info("Request hooks set")
 
-from celery import Celery
-
-
-def make_celery(app):
-    celery = Celery(
-        app.import_name,
-        backend=app.config['CELERY_RESULT_BACKEND'],
-        broker=app.config['CELERY_BROKER_URL']
-    )
-    celery.conf.update(app.config)
-
-    class ContextTask(celery.Task):
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return self.run(*args, **kwargs)
-
-    celery.Task = ContextTask
-    return celery
-
-
-app.config.update(
-    CELERY_BROKER_URL='redis://localhost:6379',
-    CELERY_RESULT_BACKEND='redis://localhost:6379'
-)
-celery = make_celery(app)
-
-
-@celery.task()
-def add_together():
-    print(1231231231)
-    time.sleep(100)
-    pass
-
-
 #####################################
 # Endpoint Definitions and Blueprints
 #####################################
 app.register_blueprint(healthz, url_prefix='/')
-app.register_blueprint(udif_creator, url_prefix='/create-udif')
+app.register_blueprint(udif_creator, url_prefix='/udif')
