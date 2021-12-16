@@ -11,8 +11,8 @@ spec:
       - path: /
         pathType: Prefix
         backend:
-          service: udif-data-provider-service
-            name:
+          service:
+            name: udif-data-provider-service
             port:
               number: 5000
       - path: /flower
