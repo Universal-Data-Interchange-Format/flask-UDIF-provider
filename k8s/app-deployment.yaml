@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: udif-data-provider
+  name: udif-data-provider-deployment
   labels:
     app: udif-data-provider
     version: v1
