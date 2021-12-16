@@ -6,19 +6,24 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - http:
+  - host: udif-data-provider-api.clture.io
+    http:
       paths:
       - path: /
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: udif-data-provider-service
             port:
               number: 5000
-      - path: /flower
-        pathType: Prefix
+      - path: /flower/*
+        pathType: ImplementationSpecific
         backend:
           service:
             name: flower-service
             port:
               number: 5555
+status:
+  loadBalancer:
+    ingress:
+    - ip: 34.117.161.112
