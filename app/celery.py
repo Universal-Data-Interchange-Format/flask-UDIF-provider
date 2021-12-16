@@ -34,8 +34,8 @@ def make_celery(app):
 
 
 app.config.update(
-    CELERY_BROKER_URL='redis://redis:6379/0',
-    CELERY_RESULT_BACKEND='redis://redis:6379/0'
+    CELERY_BROKER_URL=f'redis://{os.getenv("REDIS_URL")}:6379/0',
+    CELERY_RESULT_BACKEND=f'redis://{os.getenv("REDIS_URL")}:6379/0'
 )
 celery = make_celery(app)
 

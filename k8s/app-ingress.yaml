@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: udif-data-provider-service
+            name:
+            port:
+              number: 5000
+      - path: /flower
+          pathType: Prefix
+          backend:
+            service: flower-service
+              name:
+              port:
+                number: 5555

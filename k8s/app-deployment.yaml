@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udif-data-provider
+  labels:
+    app: udif-data-provider
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udif-data-provider
+  template:
+    metadata:
+      labels:
+        app: udif-data-provider
+    spec:
+      containers:
+        - name: udif-data-provider
+          image: jackiezui/udif-data-provider:latest
+          command: [ "flask", "run", "--host=0.0.0.0", "--port=5000" ]
+          imagePullPolicy: Always
+          env:
+            - name: ENV
+              value: "local"
+            - name: FLASK_DEBUG
+              value: "1"
+            - name: FLASK_ENV
+              value: "development"
+            - name: FLASK_APP
+              value: "app/wsgi.py"
+            - name: POSTGRES_HOST
+              value: "localhost"
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: common-configmap
+#                  key: proxy-url
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: MAX_OVERFLOW
+              value: "1"
+            - name: POOL_SIZE
+              value: "1"
+            - name: PROJECT_NAME
+              value: "clture-production"
+            - name: APPLY_SCHEMA
+              value: "false"
+            - name: BUCKET_NAME
+              value: "udif_data_bkt_prod"
+            - name: GRAPHQL_URL
+              value: "https://streamlytics-graphql-v3-tus3qiegjq-uc.a.run.app/graphql"
+            - name: WEBHOOK_URL
+              value: "http://127.0.0.1:5000/udif/done"
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: common-configmap
+                  key: redis-url
+            - name: POSTGRES_DB
+              value: "clture_production_db"
+#              valueFrom:
+#                secretKeyRef:
+#                  name: cloudsql-db-credentials
+#                  key: db
+            - name: POSTGRES_USER
+              value: "streamlytics-db-user"
+#              valueFrom:
+#                secretKeyRef:
+#                  name: cloudsql-db-credentials
+#                  key: user
+            - name: POSTGRES_PASS
+              value: "streamlytics2020_data!"
+          ports:
+            - containerPort: 5000
+        - name: celery-worker
+          image: jackiezui/udif-data-provider:latest
+          command: ["celery", "-A", "app.celery.celery", "worker", "-l", "info"]
+          imagePullPolicy: Always
+          env:
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: common-configmap
+                  key: redis-url
+            - name: BUCKET_NAME
+              value: "udif_data_bkt_prod"
+            - name: GRAPHQL_URL
+              value: "https://streamlytics-graphql-v3-tus3qiegjq-uc.a.run.app/graphql"
+            - name: WEBHOOK_URL
+              value: "http://127.0.0.1:5000/udif/done"
+        - image: gcr.io/cloudsql-docker/gce-proxy:latest
+          name: cloudsql-proxy
+          command: [ "/cloud_sql_proxy",
+                     "-instances=clture-production:us-central1:streamlytics-prod-server=tcp:5432" ]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: udif-data-provider-service
+  labels:
+    app: udif-data-provider
+spec:
+  selector:
+    app: udif-data-provider
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30025

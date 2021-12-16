@@ -12,6 +12,6 @@ RUN mkdir /flask_app
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-ADD . /flask_app
+#ADD . /flask_app
 
 WORKDIR /flask_app
