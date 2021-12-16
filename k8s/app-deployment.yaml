@@ -31,10 +31,10 @@ spec:
               value: "app/wsgi.py"
             - name: POSTGRES_HOST
               value: "localhost"
-#              valueFrom:
-#                configMapKeyRef:
-#                  name: common-configmap
-#                  key: proxy-url
+            #              valueFrom:
+            #                configMapKeyRef:
+            #                  name: common-configmap
+            #                  key: proxy-url
             - name: POSTGRES_PORT
               value: "5432"
             - name: MAX_OVERFLOW
@@ -58,23 +58,27 @@ spec:
                   key: redis-url
             - name: POSTGRES_DB
               value: "clture_production_db"
-#              valueFrom:
-#                secretKeyRef:
-#                  name: cloudsql-db-credentials
-#                  key: db
+            #              valueFrom:
+            #                secretKeyRef:
+            #                  name: cloudsql-db-credentials
+            #                  key: db
             - name: POSTGRES_USER
               value: "streamlytics-db-user"
-#              valueFrom:
-#                secretKeyRef:
-#                  name: cloudsql-db-credentials
-#                  key: user
+            #              valueFrom:
+            #                secretKeyRef:
+            #                  name: cloudsql-db-credentials
+            #                  key: user
             - name: POSTGRES_PASS
               value: "streamlytics2020_data!"
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
           ports:
             - containerPort: 5000
         - name: celery-worker
           image: jackiezui/udif-data-provider:latest
-          command: ["celery", "-A", "app.celery.celery", "worker", "-l", "info"]
+          command: [ "celery", "-A", "app.celery.celery", "worker", "-l", "info" ]
           imagePullPolicy: Always
           env:
             - name: REDIS_URL
@@ -90,8 +94,19 @@ spec:
               value: "http://127.0.0.1:5000/udif/done"
         - image: gcr.io/cloudsql-docker/gce-proxy:latest
           name: cloudsql-proxy
-          command: [ "/cloud_sql_proxy",
-                     "-instances=clture-production:us-central1:streamlytics-prod-server=tcp:5432" ]
+          command: [
+              "/cloud_sql_proxy",
+              "-instances=clture-production:us-central1:streamlytics-prod-server=tcp:5432",
+              "-credential_file=/secrets/cloudsql/prod.json"
+          ]
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
 ---
 apiVersion: v1
 kind: Service
