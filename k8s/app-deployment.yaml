@@ -70,10 +70,6 @@ spec:
             #                  key: user
             - name: POSTGRES_PASS
               value: "streamlytics2020_data!"
-          volumeMounts:
-            - name: cloudsql-instance-credentials
-              mountPath: /secrets/cloudsql
-              readOnly: true
           ports:
             - containerPort: 5000
         - name: celery-worker
@@ -105,8 +101,8 @@ spec:
               readOnly: true
       volumes:
         - name: cloudsql-instance-credentials
-          secret:
-            secretName: cloudsql-instance-credentials
+          persistentVolumeClaim:
+            claimName: app-pv-claim
 ---
 apiVersion: v1
 kind: Service
