@@ -18,7 +18,7 @@ spec:
       - path: /flower
           pathType: Prefix
           backend:
-            service: flower-service
-              name:
+            service:
+              name: flower-service
               port:
                 number: 5555
