@@ -23,7 +23,3 @@ spec:
             name: flower-service
             port:
               number: 5555
-status:
-  loadBalancer:
-    ingress:
-    - ip: 34.117.161.112
