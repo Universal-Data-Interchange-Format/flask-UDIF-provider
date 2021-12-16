@@ -54,10 +54,14 @@ def celery_process_udif(user_id: str, username: str, requested_datetime: str) ->
     print(f'{username}\'s Celery working')
     gql_url = os.getenv('GRAPHQL_URL')
     try:
+        print("About to connect to DB.")
+
         session = create_engine(get_url(), connect_args={}).connect()
         query = """select id from users_upload where user_id = '%s'""" % user_id
         result = session.execute(query)
         session.close()
+
+        print("Database connection has been closed")
 
         t_list = []
         for (upload_id,) in result:

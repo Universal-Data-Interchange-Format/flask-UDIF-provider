@@ -30,4 +30,9 @@ def create_udif_file():
 
 @udif_creator.route('/done', methods=['GET'])
 def test_done():
+    data = request.get_json()
+    if 'data' in data:
+        print(data['data'])
+    else:
+        print(data['error'])
     return jsonify({'result': 'Success'})

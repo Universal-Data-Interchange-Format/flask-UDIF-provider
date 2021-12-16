@@ -31,10 +31,6 @@ spec:
               value: "app/wsgi.py"
             - name: POSTGRES_HOST
               value: "localhost"
-            #              valueFrom:
-            #                configMapKeyRef:
-            #                  name: common-configmap
-            #                  key: proxy-url
             - name: POSTGRES_PORT
               value: "5432"
             - name: MAX_OVERFLOW
@@ -58,16 +54,8 @@ spec:
                   key: redis-url
             - name: POSTGRES_DB
               value: "clture_production_db"
-            #              valueFrom:
-            #                secretKeyRef:
-            #                  name: cloudsql-db-credentials
-            #                  key: db
             - name: POSTGRES_USER
               value: "streamlytics-db-user"
-            #              valueFrom:
-            #                secretKeyRef:
-            #                  name: cloudsql-db-credentials
-            #                  key: user
             - name: POSTGRES_PASS
               value: "streamlytics2020_data!"
           ports:
@@ -77,6 +65,8 @@ spec:
           command: [ "celery", "-A", "app.celery.celery", "worker", "-l", "info" ]
           imagePullPolicy: Always
           env:
+            - name: ENV
+              value: "local"
             - name: REDIS_URL
               valueFrom:
                 configMapKeyRef:
@@ -88,6 +78,16 @@ spec:
               value: "https://streamlytics-graphql-v3-tus3qiegjq-uc.a.run.app/graphql"
             - name: WEBHOOK_URL
               value: "http://127.0.0.1:5000/udif/done"
+            - name: POSTGRES_DB
+              value: "clture_production_db"
+            - name: POSTGRES_USER
+              value: "streamlytics-db-user"
+            - name: POSTGRES_PASS
+              value: "streamlytics2020_data!"
+            - name: POSTGRES_HOST
+              value: "localhost"
+            - name: POSTGRES_PORT
+              value: "5432"
         - image: gcr.io/cloudsql-docker/gce-proxy:latest
           name: cloudsql-proxy
           command: [
