@@ -16,10 +16,3 @@ spec:
             name: udif-data-provider-service
             port:
               number: 5000
-      - path: /flower/*
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: flower-service
-            port:
-              number: 5555

@@ -102,10 +102,10 @@ def celery_process_udif(user_id: str, username: str, requested_datetime: str) ->
             )
             message = processed_file_url
             print(message)
-        requests.post(url=os.getenv('WEBHOOK_URL'), json={'data': message})
+        requests.post(url=os.getenv('WEBHOOK_URL'), json={'data': message, 'user_id': user_id})
 
         print(f'{username}\'s Celery Task has been completed.')
 
     except Exception as e:
         message = f'{e.__str__()}'
-        requests.post(url=os.getenv('WEBHOOK_URL'), json={'error': message})
+        requests.post(url=os.getenv('WEBHOOK_URL'), json={'error': message, 'user_id': user_id})
