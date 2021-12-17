@@ -50,7 +50,7 @@ def celery_health_check() -> bool:
 
 
 @celery.task()
-def celery_process_udif(user_id: str, username: str, requested_datetime: str) -> None:
+def celery_process_udif(user_id: str, requested_id: str, username: str, requested_datetime: str) -> None:
     print(f'{username}\'s Celery working')
     gql_url = os.getenv('GRAPHQL_URL')
     try:
@@ -102,10 +102,10 @@ def celery_process_udif(user_id: str, username: str, requested_datetime: str) ->
             )
             message = processed_file_url
             print(message)
-        requests.post(url=os.getenv('WEBHOOK_URL'), json={'data': message, 'user_id': user_id})
+        requests.post(url=os.getenv('WEBHOOK_URL'), json={'file_url': message, 'requested_id': requested_id})
 
         print(f'{username}\'s Celery Task has been completed.')
 
     except Exception as e:
         message = f'{e.__str__()}'
-        requests.post(url=os.getenv('WEBHOOK_URL'), json={'error': message, 'user_id': user_id})
+        requests.post(url=os.getenv('WEBHOOK_URL'), json={'error': message, 'requested_id': requested_id})

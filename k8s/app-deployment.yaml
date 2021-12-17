@@ -46,7 +46,7 @@ spec:
             - name: GRAPHQL_URL
               value: "https://streamlytics-graphql-v3-tus3qiegjq-uc.a.run.app/graphql"
             - name: WEBHOOK_URL
-              value: "http://127.0.0.1:5000/udif/done"
+              value: "https://clture-production.uc.r.appspot.com/requests/data/update"
             - name: REDIS_URL
               valueFrom:
                 configMapKeyRef:
@@ -77,7 +77,7 @@ spec:
             - name: GRAPHQL_URL
               value: "https://streamlytics-graphql-v3-tus3qiegjq-uc.a.run.app/graphql"
             - name: WEBHOOK_URL
-              value: "http://127.0.0.1:5000/udif/done"
+              value: "https://clture-production.uc.r.appspot.com/requests/data/update"
             - name: POSTGRES_DB
               value: "clture_production_db"
             - name: POSTGRES_USER
