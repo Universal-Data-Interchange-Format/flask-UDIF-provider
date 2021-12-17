@@ -113,8 +113,9 @@ metadata:
 spec:
   selector:
     app: udif-data-provider
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-    - protocol: TCP
-      port: 5000
-      targetPort: 5000
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
