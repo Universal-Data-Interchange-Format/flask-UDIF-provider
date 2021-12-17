@@ -113,7 +113,7 @@ metadata:
 spec:
   selector:
     app: udif-data-provider
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - name: http
       protocol: TCP
