@@ -14,4 +14,4 @@ spec:
           service:
             name: udif-data-provider-service
             port:
-              number: 30025
+              number: 5000
