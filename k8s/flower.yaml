@@ -34,9 +34,9 @@ metadata:
 spec:
   selector:
     app: flower
-  type: LoadBalancer
+#  type: LoadBalancer
   ports:
   - protocol: TCP
     port: 5555
     targetPort: 5555
-    nodePort: 30052
+#    nodePort: 30052

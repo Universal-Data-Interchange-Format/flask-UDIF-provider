@@ -113,9 +113,9 @@ metadata:
 spec:
   selector:
     app: udif-data-provider
-  type: LoadBalancer
+#  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-      nodePort: 30025
+#      nodePort: 30025
