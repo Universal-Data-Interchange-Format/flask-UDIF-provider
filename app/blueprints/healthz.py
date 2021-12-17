@@ -4,7 +4,7 @@ from app.celery import celery_health_check
 healthz = Blueprint('healthz', __name__)
 
 
-@healthz.route('', methods=['GET'])
+@healthz.route('healthz', methods=['GET'])
 def get_health_check():
     result = celery_health_check.apply_async()
     if result.get():
