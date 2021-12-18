@@ -60,6 +60,10 @@ spec:
               value: "streamlytics2020_data!"
           ports:
             - containerPort: 5000
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
         - name: celery-worker
           image: jackiezui/udif-data-provider:latest
           command: [ "celery", "-A", "app.celery.celery", "worker", "-l", "info" ]
