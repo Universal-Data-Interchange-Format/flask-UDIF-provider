@@ -88,6 +88,10 @@ spec:
               value: "localhost"
             - name: POSTGRES_PORT
               value: "5432"
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
         - image: gcr.io/cloudsql-docker/gce-proxy:latest
           name: cloudsql-proxy
           command: [
