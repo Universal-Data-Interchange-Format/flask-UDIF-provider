@@ -54,8 +54,8 @@ This provider is for providing users with their data in UDIF
 
 ### 6. Computer Engine Instance
 
-    https://console.cloud.google.com/compute/instancesDetail/zones/us-central1-a/instances/flask-udif-provider?project=clture-productions
+[GCE](https://console.cloud.google.com/compute/instancesDetail/zones/us-central1-a/instances/flask-udif-provider?project=clture-productions)
 
 ### 7. GCP Kubernetes Engine
 
-    https://console.cloud.google.com/kubernetes/clusters/details/us-central1-c/udif-data-provider-prod/details?cloudshell=false&project=clture-production
+[GCP K8s Engine](https://console.cloud.google.com/kubernetes/clusters/details/us-central1-c/udif-data-provider-prod/details?cloudshell=false&project=clture-production)
