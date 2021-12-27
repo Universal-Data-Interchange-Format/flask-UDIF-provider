@@ -97,7 +97,7 @@ def celery_process_udif(user_id: str, requested_id: str, username: str, requeste
                 client=client,
                 bucket_name=os.getenv('BUCKET_NAME'),
                 blob_name=f"{username}_{requested_datetime}",
-                file_name=f"{username}_{requested_datetime}.json",
+                file_name=f"{username}_{requested_datetime}.udif",
                 data=text
             )
             message = processed_file_url
