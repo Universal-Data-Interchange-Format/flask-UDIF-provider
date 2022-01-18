@@ -92,7 +92,7 @@ def celery_process_udif(user_id: str, requested_id: str, username: str, requeste
 
         message = 'User has not data'
         if t_list:
-            text: str = json.dumps(t_list)
+            text: str = json.dumps(t_list, indent=2)
             processed_file_url: str = upload_data_with_zip(
                 client=client,
                 bucket_name=os.getenv('BUCKET_NAME'),
