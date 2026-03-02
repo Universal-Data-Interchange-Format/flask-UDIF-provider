@@ -1,6 +1,25 @@
-# flask-UDIF-provider
+# Flask UDIF Provider
 
-This provider is for providing users with their data in UDIF
+A Flask-based provider that serves users their own data in UDIF 
+(Universal Data Interchange Format).
+
+Originally built and deployed at Streamlytics, Inc. (2020). 
+Open sourced under Apache 2.0.
+
+---
+
+## Part of the UDIF Ecosystem
+
+- [UDIF Specification](https://github.com/Universal-Data-Interchange-Format/udif) 
+— the core standard
+- [UDIF Python](https://github.com/Universal-Data-Interchange-Format/udif-python) 
+— Python readers and writers
+- [UDIF Storage](https://github.com/Universal-Data-Interchange-Format/udif-storage) 
+— storage API
+
+**Inventor:** UDIF was invented by [Angela Benton](https://angelabenton.com).
+
+---
 
 ### 1. Set Environment
 
@@ -21,7 +40,7 @@ This provider is for providing users with their data in UDIF
     PROJECT_NAME=
 
     BUCKET_NAME=udif_data_bkt_prod
-    GRAPHQL_URL=https://streamlytics-graphql-v3-tus3qiegjq-uc.a.run.app/graphql
+    GRAPHQL_URL=
     WEBHOOK_URL=http://web:5000/udif/done
 
     REDIS=redis
@@ -39,7 +58,7 @@ This provider is for providing users with their data in UDIF
 
 ### 5. API
 
-    endpoint: http://34.68.254.175:5000/udif/create
+    endpoint: 
     method: GET
 
     body :
